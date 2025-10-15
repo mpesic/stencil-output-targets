@@ -251,6 +251,7 @@ const createComponentForServerSideRendering = <I extends HTMLElement, E extends 
     const serializedComponentByLine = html.split('\n');
     const hydrationComment = '<!--r.1-->';
     const isShadowComponent = serializedComponentByLine[1].includes('shadowrootmode="open"');
+    const shadowRootDelegatesFocus = serializedComponentByLine[1].includes('shadowrootdelegatesfocus');
     let templateContent: undefined | string = undefined;
     if (isShadowComponent) {
       const templateEndTag = '  </template>';
@@ -326,6 +327,7 @@ const createComponentForServerSideRendering = <I extends HTMLElement, E extends 
                   <template
                     // @ts-expect-error
                     shadowrootmode="open"
+                    {...(shadowRootDelegatesFocus ? { shadowrootdelegatesfocus: '' } : {})}
                     suppressHydrationWarning={true}
                     dangerouslySetInnerHTML={{ __html: hydrationComment + templateContent }}
                   ></template>
